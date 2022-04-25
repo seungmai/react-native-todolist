@@ -1,3 +1,4 @@
+// theme.js
 export const theme = {
 	background: '#111111',
 	itemBackground: '#333333',

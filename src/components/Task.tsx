@@ -1,11 +1,13 @@
+// Task.js
 import React, {useState} from 'react'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
+// Task.js
 import IconButton from './IconButton'
 import {icons} from '../icons'
 import Input from './Input'
 
-const Task = ({item, deleteTask, toggleTask, updateTask}) => {
+const Task = ({item, deleteTask, toggleTask, updateTask}:any) => {
 	const [isEditing, setIsEditing] = useState(false)
 	const [text, setText] = useState(item.text)
 
@@ -41,7 +43,7 @@ const Task = ({item, deleteTask, toggleTask, updateTask}) => {
 const Container = styled.View`
 	flex-direction: row;
 	align-items: center;
-	background-color: ${({theme}) => theme.itemBackground};
+	background-color: ${({theme}:any) => theme.itemBackground};
 	border-radius: 10px;
 	padding: 5px;
 	margin: 3px 0;
@@ -49,8 +51,8 @@ const Container = styled.View`
 const Contents = styled.Text`
 	flex: 1;
 	font-size: 24px;
-	color: ${({theme, completed}) => (completed ? theme.done : theme.text)};
-	text-decoration-line: ${({completed}) => (completed ? 'line-through' : 'none')};
+	color: ${({theme, completed}:any) => (completed ? theme.done : theme.text)};
+	text-decoration-line: ${({completed}:any) => (completed ? 'line-through' : 'none')};
 `
 
 Task.propTypes = {

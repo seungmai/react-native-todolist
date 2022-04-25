@@ -1,10 +1,11 @@
+// IconButton.js
 import React from 'react'
 import {TouchableOpacity, View} from 'react-native'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 import {icons} from '../icons'
 
-const IconButton = ({icon, onPress, item}) => {
+const IconButton = ({icon, onPress, item}:any) => {
 	// id값이 있어야 삭제를 할수있기 떄문에 id와 같이 넘겨줌
 	const _onPress = () => {
 		onPress(item.id)
@@ -22,7 +23,7 @@ const Icon = styled.Image`
 	width: 30px;
 	height: 30px;
 	margin: 10px;
-	tint-color: ${({theme, completed}) => (completed ? theme.done : theme.text)};
+	tint-color: ${({theme, completed}: any) => (completed ? theme.done : theme.text)};
 `
 
 IconButton.propTypes = {

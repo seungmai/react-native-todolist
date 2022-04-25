@@ -1,5 +1,6 @@
+// App.js
 import React, {useState} from 'react'
-import {StatusBar, Dimensions} from 'react-native'
+import {StatusBar, Dimensions, Alert} from 'react-native'
 import styled, {ThemeProvider} from 'styled-components/native'
 import {theme} from './theme'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -7,6 +8,10 @@ import AppLoading from 'expo-app-loading'
 
 import Input from './components/Input'
 import Task from './components/Task'
+
+type TasksProps = {
+	id: Date | undefined, text: string, completed: boolean
+} | {};
 
 export default function App() {
 	const width = Dimensions.get('window').width
@@ -18,17 +23,18 @@ export default function App() {
 	// 	3: {id: '3', text: 'JavaScript', completed: false}
 	// }
 
-	const [tasks, setTasks] = useState({})
-	const [newTask, setNewTask] = useState('')
+	const [tasks, setTasks] = useState<object>({})
+	const [newTask, setNewTask] = useState<string>('')
 	//로딩 화면을 보여줄지 아니면 앱을 보여줄지에 대한 데이터
-	const [isReady, setIsReady] = useState(false)
+	const [isReady, setIsReady] = useState<boolean>(false)
 
 	// 1.데이터 저장 공간
-	const storeDate = async (tasks) => {
+	const storeDate = async (tasks: TasksProps) => {
 		try {
 			// 저장할 객체를 전달받고 문자열로 키 값을 해야하기 때문에 tasks라는 키와 전달된 객체를 문자열로 만들어서 저장한다.
 			await AsyncStorage.setItem('tasks', JSON.stringify(tasks))
 			setTasks(tasks)
+
 		} catch (e) {
 			//
 		}
@@ -50,32 +56,36 @@ export default function App() {
 		const newTaskObject = {
 			[ID]: {id: ID, text: newTask, completed: false}
 		}
-		alert(newTask)
+		Alert.alert(newTask)
 		setNewTask('')
-		storeDate({...tasks, ...newTaskObject})
+		storeDate({
+	id: undefined,
+	text: '',
+	completed: false
+})
 	}
 
 	// 삭제 함수
-	const deleteTask = (id) => {
+	const deleteTask = (id: string | number) => {
 		// 현재 항목들과 동일한 항목을 갖고 있는 변수를 만든다.
-		const currentTasks = Object.assign({}, tasks)
+		const currentTasks: TasksProps = { ...tasks };
 		// 변수에서 삭제하고자 하는 아이디 찾아 삭제를 한다.
 		delete currentTasks[id]
 		// 삭제하고자하는 삭제된 목록을 tasks에 대입
 		storeDate(currentTasks)
-		alert('삭제되었습니다.')
+		Alert.alert('삭제되었습니다.')
 	}
 
 	// 완료 함수
-	const toggleTask = (id) => {
-		const currentTasks = Object.assign({}, tasks)
+	const toggleTask = (id: string | number) => {
+		const currentTasks:any = Object.assign({}, tasks)
 		currentTasks[id]['completed'] = !currentTasks[id]['completed']
 		storeDate(currentTasks)
 	}
 
 	// 수정 함수
-	const updateTask = (item) => {
-		const currentTasks = Object.assign({}, tasks)
+	const updateTask = (item: { id: string | number }) => {
+		const currentTasks:any  = Object.assign({}, tasks)
 		currentTasks[item.id] = item
 		storeDate(currentTasks)
 	}
@@ -101,19 +111,21 @@ export default function App() {
 
 const Container = styled.SafeAreaView`
 	flex: 1;
-	background-color: ${({theme}) => theme.background};
+	background-color: ${({theme}:any) => theme.background};
 	align-items: center;
 	justify-content: flex-start;
 `
+
 const Title = styled.Text`
 	font-size: 40px;
 	font-weight: 600;
-	color: ${({main}) => theme.main};
+	color: ${({main}:any) => theme.main};
 	width: 100%;
 	align-items: flex-end;
 	padding: 0 20px;
 `
+
 const List = styled.ScrollView`
 	flex: 1;
-	width: ${({width}) => width - 40};
+	width: ${({width}:any) => width - 40};
 `
